@@ -20,11 +20,9 @@ contract BattleToken is ERC721 {
 
     function mintToken(address recipient) external {
         _tokenIds.increment();
-        uint256 newTokenId = _tokenIds.current();
+        uint256 newTokenId = _tokenIds.currentValue();
         _mint(recipient, newTokenId);
         tokenPower[newTokenId] = _generateRandomPower();
-
-        // Emit the TokenMinted event
         emit TokenMinted(recipient, newTokenId);
     }
 
@@ -42,15 +40,15 @@ contract BattleToken is ERC721 {
         uint256 power2 = tokenPower[tokenId2];
 
         if (power1 > power2) {
-            victoryTokenContract.mint(
+            victoryTokenContract.mintTokens(
                 msg.sender,
                 1 * 10 ** victoryTokenContract.decimals()
-            ); // Mint 1 victory token to the winner
+            );
         } else if (power2 > power1) {
-            victoryTokenContract.mint(
+            victoryTokenContract.mintTokens(
                 msg.sender,
                 1 * 10 ** victoryTokenContract.decimals()
-            ); // Mint 1 victory token to the winner
+            );
         }
 
         tokenPower[tokenId1] = _generateRandomPower();
